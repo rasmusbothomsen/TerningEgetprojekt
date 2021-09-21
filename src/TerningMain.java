@@ -3,20 +3,52 @@ import java.util.Random;
 public class TerningMain {
 
     public static void main (String[]args) throws InterruptedException {
+        int[] diceValue;
         while(true) {
-            dicethrow();
+            diceValue=dicethrow();
+            System.out.println("Du slog "+diceValue[0]+"og "+diceValue[1]);
+            compareThrow(diceValue);
+            System.out.println();
+
             Thread.sleep(1000);
+
+
         }
 
     }
-    public static int dicethrow (){
+    public static void compareThrow(int[]a){
+        if (a[0]==a[1]){
+            switch (a[0]){
+                case 1:
+                    database(a[0],a[1],true,false);
+                    break;
+                case 6:
+                    extraThrow();
+                    database(a[0],a[1],false,true);
+                    break;
+                default:
+                    extraThrow();
+                    database(a[0],a[1],false,false);
+                    break;
+
+            }
+
+
+        }
+        else database(a[0],a[1],false,false);
+    }
+    public static void extraThrow(){
+        System.out.println("2 ens! du får et ekstra kast");
+        dicethrow();
+    }
+    public static int[] dicethrow (){
 
         Random dice = new Random();
-        System.out.println(dice.nextInt(6)+1);
-        return dice.nextInt(6)+1;
+        int[] result = {dice.nextInt(6)+1,dice.nextInt(6)+1};
+        return result;
 
     }
-    public int[] database(int a,boolean twoOnes,int b){
+    public static void database(int a,int b,boolean twoOnes,boolean twoSix){
         int player1;
         int player2;
         for (player1 =0;player1<1;){
@@ -31,7 +63,7 @@ public class TerningMain {
         }
         player2+=b;
         int[] total = {player1, player2};
-        return total;
+
 
 
 
